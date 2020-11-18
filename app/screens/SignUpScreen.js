@@ -1,5 +1,5 @@
-import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, View, KeyboardAvoidingView } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -29,61 +29,68 @@ const validationSchema = Yup.object().shape({
 });
 
 function SignUpScreen(props) {
+  const [avoidKeyboard, setAvoidKeyboard] = useState(false);
   return (
     <Screen background="2">
-      <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/Logo.png")}
-        ></Image>
-      </View>
-      <View style={styles.fieldContainer}>
-        <AppForm
-          initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-          }}
-          onSubmit={(values) => console.log(values)}
-          validationSchema={validationSchema}
-        >
-          <AppFormField
-            autoCorrect={false}
-            icon="account"
-            name="name"
-            placeholder="Name                                                        "
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            name="email"
-            keyboardType="email-address"
-            placeholder="Email                                                        "
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="password"
-            placeholder="Password                                                    "
-            secureTextEntry
-            textContentType="password"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="confirmPassword"
-            placeholder="Confirm Password                                                    "
-            secureTextEntry
-            textContentType="password"
-          />
+      <KeyboardAvoidingView behavior="position" enabled={avoidKeyboard}>
+        <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/Logo.png")}
+          ></Image>
+        </View>
+        <View style={styles.fieldContainer}>
+          <AppForm
+            initialValues={{
+              name: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            }}
+            onSubmit={(values) => console.log(values)}
+            validationSchema={validationSchema}
+          >
+            <AppFormField
+              autoCorrect={false}
+              icon="account"
+              name="name"
+              onFocus={() => setAvoidKeyboard(false)}
+              placeholder="Name                                                        "
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="email"
+              name="email"
+              keyboardType="email-address"
+              onFocus={() => setAvoidKeyboard(false)}
+              placeholder="Email                                                        "
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password                                                    "
+              secureTextEntry
+              textContentType="password"
+              onFocus={() => setAvoidKeyboard(true)}
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="confirmPassword"
+              placeholder="Confirm Password                                                    "
+              secureTextEntry
+              textContentType="password"
+              onFocus={() => setAvoidKeyboard(true)}
+            />
 
-          <SubmitButton title="Sign Up" />
-        </AppForm>
-      </View>
+            <SubmitButton title="Sign Up" />
+          </AppForm>
+        </View>
+      </KeyboardAvoidingView>
     </Screen>
   );
 }
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
   fieldContainer: {
     width: "100%",
     height: "100%",
-    top: 60,
+    top: 100,
     alignItems: "center",
   },
   logo: {

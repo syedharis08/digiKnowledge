@@ -1,14 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableHighlight } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 function AppButton({ title, onPress, width = 300 }) {
   return (
-    <TouchableHighlight onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <View style={[styles.button, { width: width }]}>
         <Text style={styles.text}>{title}</Text>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({

@@ -1,37 +1,27 @@
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, StyleSheet, Image } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
 
-function Card({ icon, title }) {
+function Card({ icon, title, size = 80, style, styleIcon }) {
   return (
-    <View style={styles.card}>
-      <MaterialCommunityIcons name={icon} size={30} color={colors.primary} />
-      <AppText style={styles.title} color={colors.primary}>
-        {title}
-      </AppText>
-    </View>
+    <TouchableOpacity>
+      <View style={style}>
+        <View style={styleIcon}>
+          {icon && (
+            <MaterialCommunityIcons
+              name={icon}
+              size={size}
+              color={colors.secondary}
+            />
+          )}
+        </View>
+        <AppText color={colors.primary}>{title}</AppText>
+      </View>
+    </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    borderRadius: 15,
-    marginBottom: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 110,
-    height: 70,
-    marginRight: 30,
-    marginTop: 40,
-    borderWidth: 1,
-    borderColor: "darkgrey",
-  },
-  title: {
-    marginBottom: 7,
-  },
-});
 
 export default Card;

@@ -1,17 +1,41 @@
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, StyleSheet, Text } from "react-native";
+import { View, FlatList, TouchableOpacity, ScrollView } from "react-native";
+
+import Card from "../components/Card";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
 
-function ListItem({ icon, title }) {
+function ListItem({ icon, title, style, innerStyle, size = 30, topic }) {
   return (
-    <>
-      <MaterialCommunityIcons name={icon} size={20} color={colors.secondary} />
-      <AppText color={colors.primary}>{title}</AppText>
-    </>
+    <TouchableOpacity>
+      <View style={style}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={size}
+            color={colors.secondary}
+          />
+        )}
+        <AppText style={innerStyle} color={colors.secondary}>
+          {title}
+        </AppText>
+        {topic && (
+          <ScrollView horizontal={true}>
+            <FlatList
+              style={{ flexDirection: "row" }}
+              data={topic}
+              keyExtractor={(topic) => topic.id.toString()}
+              renderItem={({ item }) => (
+                <Card icon={item.icon} title={item.title} />
+              )}
+            />
+          </ScrollView>
+        )}
+      </View>
+    </TouchableOpacity>
   );
 }
-const styles = StyleSheet.create({});
+
 export default ListItem;

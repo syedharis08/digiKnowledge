@@ -7,7 +7,6 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
-  SafeAreaView,
 } from "react-native";
 import * as Yup from "yup";
 
