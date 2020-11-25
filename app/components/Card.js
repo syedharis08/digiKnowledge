@@ -4,10 +4,13 @@ import { View, TouchableOpacity } from "react-native";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
-function Card({ icon, title, size = 80, style, styleIcon }) {
+function Card({ icon, title, size = 70, style, styleIcon, onPress }) {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={style}>
         <View style={styleIcon}>
           {icon && (
@@ -18,7 +21,9 @@ function Card({ icon, title, size = 80, style, styleIcon }) {
             />
           )}
         </View>
-        <AppText color={colors.primary}>{title}</AppText>
+        <AppText color={colors.primary} style={{ fontSize: 15 }}>
+          {title}
+        </AppText>
       </View>
     </TouchableOpacity>
   );

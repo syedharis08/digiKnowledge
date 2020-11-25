@@ -2,9 +2,12 @@ import React from "react";
 import { Text } from "react-native";
 
 import defaultStyles from "../config/styles";
-function AppText({ children, style, color }) {
+function AppText({ children, style, color, onPress }) {
   return (
-    <Text style={[defaultStyles.text, style, { color: color }]}>
+    <Text
+      onPress={onPress}
+      style={[defaultStyles.text, style, { color: color }]}
+    >
       {children}
     </Text>
   );

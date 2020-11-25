@@ -1,48 +1,42 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 
-function QuizCard({ question, answer, aobj, index }) {
-  console.log("Answer  ", aobj);
-  console.log("Answers", answer);
-  console.log("Index  ", index);
+function QuizCard({ title, answer = [], onPress, correctAnswer }) {
+  // const [correctAnswer, setCorrectAnswer] = useState();
 
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.question}>
-        <Text>{question}</Text>
-      </View>
-      <View style={styles.answers}>
-        <TouchableOpacity>
-          <Text>{answer.answer}</Text>
-        </TouchableOpacity>
-      </View>
+      <Text>{title}</Text>
+      <FlatList
+        data={answer}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity>
+              <Button
+                onPress={onPress(correctAnswer)}
+                title={item.optionTitle}
+              />
+            </TouchableOpacity>
+          );
+        }}
+      />
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   mainContainer: {
-    width: "90%",
-    height: 400,
-    borderColor: "black",
-    borderRadius: 75,
-    borderWidth: 1.5,
-    // elevation: 35,
-    alignSelf: "center",
-  },
-  question: {
-    width: "100%",
-    height: 40,
-    marginVertical: 80,
-    marginHorizontal: 80,
-    alignSelf: "center",
-    borderColor: "black",
-
-    borderWidth: 1.5,
-  },
-  answers: {
-    width: "90%",
-    height: 200,
-    padding: 50,
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default QuizCard;

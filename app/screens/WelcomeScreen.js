@@ -1,17 +1,13 @@
 import React from "react";
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  View,
-  StatusBar,
-} from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
 import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
-function WelcomeScreen(props) {
+import { SCREENS } from "../config/Screens";
+
+function WelcomeScreen({ navigation }) {
   return (
     <Screen>
       <View style={styles.container}>
@@ -19,11 +15,19 @@ function WelcomeScreen(props) {
           style={styles.logo}
           source={require("../assets/Logo.png")}
         ></Image>
-        <AppText color={colors.primary}>digiKnowledge</AppText>
+        <AppText color={colors.primary} style={{ fontWeight: "bold" }}>
+          DigiKnowledge
+        </AppText>
 
         <View style={styles.buttonsContainer}>
-          <AppButton title="Sign in" onPress={() => console.log("Tapped")} />
-          <AppButton title="Sign up" />
+          <AppButton
+            title="Sign in"
+            onPress={() => navigation.navigate(SCREENS.SignIn)}
+          />
+          <AppButton
+            title="Sign up"
+            onPress={() => navigation.navigate(SCREENS.SignUp)}
+          />
         </View>
       </View>
     </Screen>
@@ -41,7 +45,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 125,
     height: 125,
-    right: 10,
+    right: 5,
   },
 });
 export default WelcomeScreen;

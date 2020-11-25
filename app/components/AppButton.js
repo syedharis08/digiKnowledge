@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
-function AppButton({ title, onPress, width = 300 }) {
+function AppButton({ title, onPress, width = 200 }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={[styles.button, { width: width }]}>

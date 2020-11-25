@@ -8,7 +8,7 @@ const Screen = ({ background = "1", children }) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        blurRadius={0.5}
+        blurRadius={1}
         source={background == "1" ? image1 : image2}
         style={styles.image}
       >

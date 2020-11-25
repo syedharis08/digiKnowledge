@@ -1,15 +1,32 @@
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, FlatList, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  FlatList,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 import Card from "../components/Card";
 
 import AppText from "./AppText";
 import colors from "../config/colors";
+import { useNavigation } from "@react-navigation/native";
+import { SCREENS } from "../config/Screens";
 
-function ListItem({ icon, title, style, innerStyle, size = 30, topic }) {
+function ListItem({
+  icon,
+  title,
+  style,
+  innerStyle,
+  size = 30,
+  topic,
+  onPress,
+}) {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <View style={style}>
         {icon && (
           <MaterialCommunityIcons
@@ -24,11 +41,20 @@ function ListItem({ icon, title, style, innerStyle, size = 30, topic }) {
         {topic && (
           <ScrollView horizontal={true}>
             <FlatList
+              horizontal
               style={{ flexDirection: "row" }}
               data={topic}
               keyExtractor={(topic) => topic.id.toString()}
               renderItem={({ item }) => (
-                <Card icon={item.icon} title={item.title} />
+                <TouchableOpacity>
+                  <Card
+                    icon={item.icon}
+                    title={item.title}
+                    style={styles.card}
+                    styleIcon={styles.icon}
+                    onPress={() => navigation.navigate(SCREENS.Video)}
+                  />
+                </TouchableOpacity>
               )}
             />
           </ScrollView>
@@ -37,5 +63,15 @@ function ListItem({ icon, title, style, innerStyle, size = 30, topic }) {
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 118,
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+});
 
 export default ListItem;

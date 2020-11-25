@@ -7,6 +7,7 @@ import Screen from "../components/Screen";
 import Logo from "../assets/Logo.png";
 import AppText from "../components/AppText";
 import colors from "../config/colors";
+import { SCREENS } from "../config/Screens";
 
 const classNames = [
   {
@@ -61,7 +62,7 @@ const classNames = [
   },
 ];
 
-function ClassScreen(props) {
+function ClassScreen({ navigation }) {
   return (
     <Screen background="2">
       <Image style={styles.imageStyles} source={Logo} />
@@ -78,6 +79,7 @@ function ClassScreen(props) {
               title={item.title}
               style={styles.direction}
               innerStyle={styles.innerStyle}
+              onPress={() => navigation.navigate(SCREENS.Tab)}
             />
           )}
         />

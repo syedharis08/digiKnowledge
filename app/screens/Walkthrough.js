@@ -14,8 +14,8 @@ import AppIntroSlider from "react-native-app-intro-slider";
 const slides = [
   {
     key: "s1",
-    text: "Best Recharge offers",
-    title: "Mobile Recharge",
+    text: "Watch Detailed Conceptual Video of a topic",
+    title: "Video on the Go",
     image: {
       uri:
         "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png",
@@ -24,53 +24,23 @@ const slides = [
   },
   {
     key: "s2",
-    title: "Flight Booking",
-    text: "Upto 25% off on Domestic Flights",
+    title: "Quiz on the Go",
+    text: "Solve Quiz of each topic",
     image: {
       uri:
-        "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_flight_ticket_booking.png",
+        "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_mobile_recharge.png",
     },
     backgroundColor: "#febe29",
   },
   {
     key: "s3",
-    title: "Great Offers",
-    text: "Enjoy Great offers on our all services",
+    title: "Track your Progress",
+    text: "Analyze your result and keep a look on your performance",
     image: {
       uri:
         "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_discount.png",
     },
     backgroundColor: "#22bcb5",
-  },
-  {
-    key: "s4",
-    title: "Best Deals",
-    text: " Best Deals on all our services",
-    image: {
-      uri:
-        "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_best_deals.png",
-    },
-    backgroundColor: "#3395ff",
-  },
-  {
-    key: "s5",
-    title: "Bus Booking",
-    text: "Enjoy Travelling on Bus with flat 100% off",
-    image: {
-      uri:
-        "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_bus_ticket_booking.png",
-    },
-    backgroundColor: "#f6437b",
-  },
-  {
-    key: "s6",
-    title: "Train Booking",
-    text: " 10% off on first Train booking",
-    image: {
-      uri:
-        "https://raw.githubusercontent.com/AboutReact/sampleresource/master/intro_train_ticket_booking.png",
-    },
-    backgroundColor: "#febe29",
   },
 ];
 
@@ -85,7 +55,7 @@ const Walkthrough = () => {
     setShowRealApp(true);
   };
 
-  const RenderItem = ({ item }) => {
+  const RenderItem = ({ item, navigation }) => {
     return (
       <View
         style={{
@@ -127,7 +97,7 @@ const Walkthrough = () => {
           renderItem={RenderItem}
           onDone={onDone}
           showSkipButton={true}
-          onSkip={onSkip}
+          onSkip={navigation.navigate("Welcome")}
         />
       )}
     </>
