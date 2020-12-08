@@ -5,12 +5,11 @@ import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 
 function VideoScreen(props) {
+  const video1 = require("../assets/FlowChart.mp4");
   return (
     <Screen background="2">
       <Video
-        source={{
-          uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
-        }}
+        source={video1}
         rate={1.0}
         volume={1.0}
         isMuted={false}
@@ -18,11 +17,14 @@ function VideoScreen(props) {
         shouldPlay
         isLooping
         useNativeControls
-        style={{ width: "100%", height: 300, justifyContent: "center" }}
+        style={{
+          width: "100%",
+          height: 300,
+          justifyContent: "center",
+          top: 200,
+        }}
       />
-      <View style={styles.buttonContainer}>
-        <AppButton title="Attmpt Quiz" />
-      </View>
+      <View style={styles.buttonContainer}></View>
     </Screen>
   );
 }

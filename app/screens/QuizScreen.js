@@ -1,8 +1,10 @@
-import React, { useState } from "react";
-import { Button, Text, FlatList, View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Button, Text, FlatList, View, StyleSheet, Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import QuizCard from "../components/QuizCard";
+import AppText from "../components/AppText";
+import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
+import quizApi from "../api/quiz";
 
 const quiz = [
   {
@@ -85,27 +87,48 @@ const quiz = [
   },
 ];
 function QuizScreen(props) {
-  const [array, setArray] = useState(quiz);
+  const [attempt, setAttempt] = useState(false);
+  const [quiz, setQuiz] = useState([]);
   const [index, setIndex] = useState(0);
   const [object, setObject] = useState({});
+  const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [visible3, setVisible3] = useState(false);
   const [rightAnswer, setRightAnswer] = useState();
   const [score, setScore] = useState(0);
   // const [item, setItem] = useState();
 
-  const handleNext = () => {
-    if (index + 1 > array.length - 1) {
-      setVisible2(true);
+  useEffect(() => {
+    getQuiz();
+  }, []);
+
+  const getQuiz = async () => {
+    setAttempt(true);
+    const response = await quizApi.getQuiz();
+    if (!response.ok) {
+      Alert.alert("Attention", "Unable to load quiz.", [
+        {
+          text: "Retry",
+          onPress: () => getQuiz(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+      setAttempt(false);
+      return;
     }
-    setIndex(index + 1);
-    setObject(array[index]);
-    console.log(index);
+    console.log("In getQuiz");
+    console.log(response.data);
+    setQuiz(response.data);
+
+    setAttempt(false);
   };
 
   const handleStart = () => {
     setVisible3(true);
-    setObject(array[index]);
+    setObject(quiz[index]);
     setIndex(index + 1);
     console.log(index);
   };
@@ -115,33 +138,45 @@ function QuizScreen(props) {
     if (item.isCorrect) {
       setScore(score + 1);
     }
+    if (index + 1 > quiz.length - 1) {
+      setVisible2(true);
+    }
+    if (index + 1 > quiz.length) {
+      setVisible(true);
+    }
+    setIndex(index + 1);
+    setObject(quiz[index]);
+    console.log(index);
   };
+  console.log(quiz);
   return (
     <Screen background="2">
       <View style={styles.mainContainer}>
-        <View>
-          <Text>{object.questionTitle}</Text>
+        <View style={styles.heading}>
+          <AppText color="white" style={{ fontWeight: "bold", fontSize: 25 }}>
+            {object.questionTitle}
+          </AppText>
+          <View style={styles.listStyle}>
+            <FlatList
+              data={object["options"]}
+              keyExtractor={(item) => item.id.toString()}
+              render  Item={({ item }) => {
+                return (
+                  <TouchableOpacity>
+                    <AppButton
+                      title={item.optionTitle}
+                      onPress={() => correctedAnswer(item)}
+                    />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
         </View>
       </View>
 
-      <FlatList
-        data={object["options"]}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity>
-              <Button
-                title={item.optionTitle}
-                onPress={() => correctedAnswer(item)}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
-      <Text>{score}</Text>
-
       <Button title="Start" onPress={handleStart} disabled={visible3} />
-      <Button title="Next" onPress={handleNext} disabled={visible2} />
+      <Button title="Show Result" disabled={visible} />
     </Screen>
   );
 }
@@ -151,6 +186,20 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
+  },
+  heading: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  listStyle: {
+    width: "100%",
+    height: "50%",
+    top: 100,
+    left: 80,
+    justifyContent: "center",
   },
 });
 export default QuizScreen;
