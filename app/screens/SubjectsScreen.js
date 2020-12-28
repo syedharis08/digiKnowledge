@@ -91,6 +91,7 @@ function SubjectsScreen({ navigation }) {
               Choose your Subject
             </AppText>
             <FlatList
+              showsVerticalScrollIndicator={false}
               data={subjectNames}
               numColumns={3}
               keyExtractor={(subjectNames) => subjectNames.id.toString()}

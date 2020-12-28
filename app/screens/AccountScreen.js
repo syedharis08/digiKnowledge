@@ -14,7 +14,7 @@ function AccountScreen(props) {
   const { user, logOut } = useAuth();
 
   return (
-    <Screen>
+    <Screen background="2">
       <AccountListItem
         title={user.name}
         subTitle={user.email}

@@ -42,9 +42,15 @@ function SignInScreen({ navigation }) {
     const response = await authApi.login(email, password);
 
     if (!response.ok) {
-      setAttempt(false);
-      setDisplayError(true);
-      setError(response.data);
+      if (response.data) {
+        setAttempt(false);
+        setDisplayError(true);
+        setError(response.data);
+      } else {
+        setAttempt(false);
+        setDisplayError(true);
+        setError("An unexpected Error occured");
+      }
       return;
     }
 
