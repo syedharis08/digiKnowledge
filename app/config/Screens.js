@@ -3,6 +3,8 @@ export const SCREENS = {
   ChapterTopic: "ChapterTopicScreen",
   Class: "ClassScreen",
   ForgotPassword: "ForgotPasswordScreen",
+  ForgetPasswordCode: "ForgetPasswordCode",
+  NewPasswordScreen: "NewPasswordScreen",
   Subject: "Subject",
   Quiz: "QuizScreen",
   Result: "ResultScreen",
@@ -12,4 +14,5 @@ export const SCREENS = {
   Tab: "Tab",
   Welcome: "WelcomeScreen",
   Video: "VideoScreen",
+  UpdatePasswordScreen: "UpdatePasswordScreen",
 };

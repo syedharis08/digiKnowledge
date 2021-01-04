@@ -1,48 +1,53 @@
 import React, { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  View,
-  Alert,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
 import AppText from "../components/AppText";
-import color from "../config/colors";
 
-import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import {
   AppForm,
   AppFormField,
-  ErrorMessages,
   SubmitButton,
+  ErrorMessages,
 } from "../components/forms";
 import { SCREENS } from "../config/Screens";
-import userApi from "../api/user";
+
+import AuthApi from "../api/auth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
 });
 
 function ForgotPasswordScreen({ navigation }) {
-  const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Email Sent",
-      "Check your email for the link",
-      [
-        {
-          text: "Go back to sigin page",
-          onPress: () => navigation.navigate(SCREENS.SignIn),
-        },
-      ],
-      { cancelable: false }
-    );
+  const [attemptFailed, setAttemptFailed] = useState(false);
+  const [searchFailed, setSearchFailed] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async ({ email }) => {
+    setAttemptFailed(true);
+    const response = await AuthApi.forgetPassword(email);
+
+    if (!response.ok) {
+      setAttemptFailed(false);
+      setSearchFailed(true);
+      if (response.data) {
+        setError(response.data);
+        return;
+      }
+      setError("An unexpected error occured");
+      return;
+    }
+
+    setAttemptFailed(false);
+    setSearchFailed(false);
+    let code = response.data;
+    code = code.toString();
+    navigation.navigate(SCREENS.ForgetPasswordCode, {
+      EMAIL: email,
+      CODE: code,
+    });
+  };
   return (
     <Screen background="2">
       <View style={styles.container}>
@@ -54,6 +59,7 @@ function ForgotPasswordScreen({ navigation }) {
           DigiKnowledge
         </AppText>
       </View>
+
       <View style={styles.fieldContainer}>
         <View style={styles.innerContainer}>
           <AppForm
@@ -61,7 +67,9 @@ function ForgotPasswordScreen({ navigation }) {
               email: " ",
             }}
             validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
+            <ErrorMessages error={error} visible={searchFailed} />
             <AppFormField
               autoCapitalize="none"
               autoCorrect={false}
@@ -70,7 +78,7 @@ function ForgotPasswordScreen({ navigation }) {
               keyboardType="email-address"
               placeholder="Email                                                        "
             />
-            <AppButton title="Send Email" onPress={createTwoButtonAlert} />
+            <SubmitButton title="Send Email" />
           </AppForm>
         </View>
       </View>

@@ -6,6 +6,8 @@ import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import { SCREENS } from "../config/Screens";
 import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import ForgetPasswordCode from "../screens/ForgetPasswordCode";
+import NewPasswordScreen from "../screens/NewPasswordScreen";
 
 const Stack = createStackNavigator();
 
@@ -17,6 +19,14 @@ const AuthNavigator = () => (
     <Stack.Screen
       name={SCREENS.ForgotPassword}
       component={ForgotPasswordScreen}
+    />
+    <Stack.Screen
+      name={SCREENS.ForgetPasswordCode}
+      component={ForgetPasswordCode}
+    />
+    <Stack.Screen
+      name={SCREENS.NewPasswordScreen}
+      component={NewPasswordScreen}
     />
   </Stack.Navigator>
 );

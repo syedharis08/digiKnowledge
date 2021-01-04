@@ -44,12 +44,12 @@ function ListItem({
               horizontal
               style={{ flexDirection: "row" }}
               data={topic}
-              keyExtractor={(topic) => topic.id.toString()}
+              keyExtractor={(topic) => topic._id}
               renderItem={({ item }) => (
                 <TouchableOpacity>
                   <Card
-                    icon={item.icon}
-                    title={item.title}
+                    icon="book"
+                    title={item.topicName}
                     style={styles.card}
                     styleIcon={styles.icon}
                     onPress={() => navigation.navigate(SCREENS.Video)}

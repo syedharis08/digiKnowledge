@@ -5,6 +5,7 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import Screen from "../components/Screen";
 import quizApi from "../api/quiz";
+import UserApi from "../api/user";
 
 const quiz = [
   {
@@ -102,6 +103,22 @@ function QuizScreen(props) {
     getQuiz();
   }, []);
 
+  const handleSubmit = async () => {
+    setAttempt(true);
+    const response = await UserApi.updateResult(score);
+
+    if (!response.ok) {
+      setAttempt(false);
+      setSearchFailed(true);
+      if (response.data) {
+        setError(response.data);
+        return;
+      }
+      setError("An unexpected error occured");
+      return;
+    }
+  };
+
   const getQuiz = async () => {
     setAttempt(true);
     const response = await quizApi.getQuiz();
@@ -160,7 +177,8 @@ function QuizScreen(props) {
             <FlatList
               data={object["options"]}
               keyExtractor={(item) => item.id.toString()}
-              render  Item={({ item }) => {
+              render
+              Item={({ item }) => {
                 return (
                   <TouchableOpacity>
                     <AppButton
@@ -177,6 +195,8 @@ function QuizScreen(props) {
 
       <Button title="Start" onPress={handleStart} disabled={visible3} />
       <Button title="Show Result" disabled={visible} />
+      <Button tile="ReAttempt Quiz" disbaled={visible} />
+      <Button title="Submit Quiz" onPress={handleSubmit} disabled={visible} />
     </Screen>
   );
 }

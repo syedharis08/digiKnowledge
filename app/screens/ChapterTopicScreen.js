@@ -8,6 +8,7 @@ import ListItem from "../components/ListItem";
 import AppText from "../components/AppText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SCREENS } from "../config/Screens";
+import chapterApi from "../api/chapterTopic";
 const computer = [
   {
     id: 1,
@@ -132,6 +133,7 @@ const pakistanStudies = [
 
 function ChapterTopicScreen({ navigation, route }) {
   const [chaptername, setChapterName] = useState([]);
+  const [attempt, setAttempt] = useState(false);
 
   useEffect(() => {
     switch (route.params.subject) {
@@ -139,7 +141,7 @@ function ChapterTopicScreen({ navigation, route }) {
         setChapterName(maths);
         break;
       case "Computer":
-        setChapterName(computer);
+        getData();
         break;
       case "Chemistry":
         setChapterName(chemistry);
@@ -147,46 +149,65 @@ function ChapterTopicScreen({ navigation, route }) {
     }
   }, []);
 
+  const getData = async () => {
+    setAttempt(true);
+    const response = await chapterApi.getChapterAndTopic();
+    if (!response.ok) {
+      Alert.alert("Attention", "Unable to load quiz.", [
+        {
+          text: "Retry",
+          onPress: () => getData(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+      setAttempt(false);
+      return;
+    }
+    setChapterName(response.data);
+
+    setAttempt(false);
+  };
   return (
     <Screen background="2">
-      <ScrollView>
-        <View style={styles.headingStyle}>
-          <AppText color="white" style={{ fontSize: 35 }}>
-            {route.params.subject}
-          </AppText>
-          <AppText color="white">Total Chapter={chaptername.length}</AppText>
+      <View style={styles.headingStyle}>
+        <AppText color="white" style={{ fontSize: 35 }}>
+          {route.params.subject}
+        </AppText>
+        <AppText color="white">Total Chapter={chaptername.length}</AppText>
 
-          <MaterialCommunityIcons
-            name="target-variant"
-            size={70}
-            style={{ left: 250, bottom: 60, color: "black" }}
-          />
-          <AppText
-            color="white"
-            style={{ fontSize: 15, left: 240, bottom: 60 }}
-            onPress={() => navigation.navigate(SCREENS.Quiz)}
-          >
-            Attempt Quiz
-          </AppText>
-        </View>
-        <View style={styles.items}>
-          <FlatList
-            data={chaptername}
-            keyExtractor={(chaptername) => chaptername.id.toString()}
-            renderItem={({ item }) => (
-              <View>
-                <ListItem
-                  icon={item.icon}
-                  title={item.title}
-                  topic={item.topic}
-                  style={styles.chapterStyle}
-                  innerStyle={styles.textStyle}
-                />
-              </View>
-            )}
-          />
-        </View>
-      </ScrollView>
+        <MaterialCommunityIcons
+          name="target-variant"
+          size={70}
+          style={{ left: 250, bottom: 60, color: "black" }}
+        />
+        <AppText
+          color="white"
+          style={{ fontSize: 15, left: 240, bottom: 60 }}
+          onPress={() => navigation.navigate(SCREENS.Quiz)}
+        >
+          Attempt Quiz
+        </AppText>
+      </View>
+      <View style={styles.items}>
+        <FlatList
+          data={chaptername}
+          keyExtractor={(chaptername) => chaptername._id}
+          renderItem={({ item }) => (
+            <View>
+              <ListItem
+                icon="book"
+                title={item.chapterName}
+                topic={item.topics}
+                style={styles.chapterStyle}
+                innerStyle={styles.textStyle}
+              />
+            </View>
+          )}
+        />
+      </View>
     </Screen>
   );
 }
