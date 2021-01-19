@@ -23,6 +23,8 @@ function ListItem({
   size = 30,
   topic,
   onPress,
+  quizIcon,
+  chapterId,
 }) {
   const navigation = useNavigation();
   return (
@@ -38,6 +40,28 @@ function ListItem({
         <AppText style={innerStyle} color={colors.secondary}>
           {title}
         </AppText>
+        {quizIcon && (
+          <View>
+            <MaterialCommunityIcons
+              name="target-variant"
+              size={70}
+              style={{ left: 250, bottom: 60, color: "black" }}
+            />
+            <AppText
+              color="white"
+              style={{ fontSize: 15, left: 240, bottom: 60 }}
+              onPress={() =>
+                navigation.navigate(SCREENS.Quiz, {
+                  id: chapterId,
+                  chapterName: title,
+                })
+              }
+            >
+              Attempt Quiz
+            </AppText>
+          </View>
+        )}
+
         {topic && (
           <ScrollView horizontal={true}>
             <FlatList

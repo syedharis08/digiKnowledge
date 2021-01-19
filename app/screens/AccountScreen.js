@@ -15,10 +15,9 @@ function AccountScreen(props) {
 
   return (
     <Screen background="2">
-      <AccountListItem
-        title={user.name}
-        subTitle={user.email}
-        IconComponent={<Fontisto name="male" size={40} color="black" />}
+      <AccountItems
+        title={user.email}
+        icon={<MaterialCommunityIcons name="account" size={40} color="black" />}
       />
       <AccountItems
         title="Settings"

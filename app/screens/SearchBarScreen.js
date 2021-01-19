@@ -1,58 +1,154 @@
-import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
-import SearchComponent from "react-native-search-component";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
+import Screen from "../components/Screen";
+
+import chapterApi from "../api/chapterTopic";
+import AppButton from "../components/AppButton";
 
 function SearchBarScreen(props) {
-  const [theme, setTheme] = React.useState("LIGHT");
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const toggleTheme = () =>
-    theme === "LIGHT" ? setTheme("DARK") : setTheme("LIGHT");
-  const themeBasedContainer = [
-    styles.container,
-    { backgroundColor: theme === "LIGHT" ? "white" : "black" },
+  const data = [
+    {
+      id: 1,
+      topicName: "Islamabad",
+    },
+    {
+      id: 2,
+      topicName: "Islamiyat",
+    },
+    {
+      id: 3,
+      topicName: "Islam",
+    },
+    {
+      id: 4,
+      topicName: "Lahore",
+    },
   ];
-  const themeBasedTextStyle = [
-    styles.textStyle,
-    { color: theme === "LIGHT" ? "black" : "white" },
-  ];
 
-  const onChange = (e) => {
-    setSearchTerm(e?.nativeEvent?.text);
+  const [topicName, setTopicName] = useState([]);
+  const [chapterName, setChapterName] = useState([]);
+  const [attempt, setAttempt] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [text, setText] = useState("");
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const filterArray = (text) => {
+    setNotFound(false);
+    if (!text) {
+      setVisible(true);
+      return;
+    }
+    setVisible(false);
+    const result = data.filter((item) => item.topicName.toLowerCase() === text);
+    if (result.length == 0) {
+      setTopicName([]);
+      setNotFound(true);
+      return;
+    }
+    setNotFound(false);
+    setTopicName(result);
   };
-  const onSearchClear = () => setSearchTerm("");
 
+  const getData = async () => {
+    setAttempt(true);
+    const response = await chapterApi.getChapterAndTopic();
+
+    if (!response.ok) {
+      Alert.alert("Attention", "Unable to load chapters.", [
+        {
+          text: "Retry",
+          onPress: () => getData(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]);
+
+      setAttempt(false);
+      return;
+    }
+    setChapterName(response.data);
+
+    setAttempt(false);
+  };
   return (
-    <SafeAreaView style={themeBasedContainer}>
-      <Text style={themeBasedTextStyle}>Search Topic</Text>
-
-      <SearchComponent
-        value={searchTerm}
-        theme={theme}
-        onChange={onChange}
-        onSearchClear={onSearchClear}
-      />
-      <Text
-        style={[
-          themeBasedTextStyle,
-          { textAlign: "left", paddingLeft: 16, fontSize: 18 },
-        ]}
-      >
-        {" "}
-        Search Term : {searchTerm}
-      </Text>
-    </SafeAreaView>
+    chapterName.length > 0 && (
+      <Screen background="2">
+        <View
+          style={{
+            marginLeft: 10,
+            marginRight: 40,
+            marginTop: 5,
+            flexDirection: "row",
+          }}
+        >
+          <View style={{ flex: 3, width: "100%" }}>
+            <TextInput
+              style={{
+                paddingLeft: 10,
+                marginTop: 15,
+                borderColor: "black",
+                borderWidth: 1,
+                height: 50,
+              }}
+              autoCapitalize="none"
+              onChangeText={setText}
+              placeholder="Enter Topic Name"
+            />
+          </View>
+          <View style={{ flex: 1, paddingLeft: 30 }}>
+            <AppButton
+              width={100}
+              title="Search"
+              onPress={() => filterArray(text)}
+            />
+          </View>
+        </View>
+        {notFound && <Text>Topic not Found</Text>}
+        {visible ? (
+          <Text>Enter topic name to search!</Text>
+        ) : (
+          <FlatList
+            data={topicName}
+            keyExtractor={(topicName) => topicName.id.toString()}
+            renderItem={({ item }) => (
+              <View>
+                <Text>{item.topicName}</Text>
+              </View>
+            )}
+          />
+        )}
+      </Screen>
+    )
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
+    alignItems: "center",
   },
-  textStyle: {
-    fontSize: 24,
-    textAlign: "center",
-    paddingVertical: 10,
+  text: {
+    fontSize: 20,
+    color: "#101010",
+    marginTop: 60,
+    fontWeight: "700",
+  },
+  listItem: {
+    marginTop: 10,
+    padding: 20,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: "100%",
+  },
+  listItemText: {
+    fontSize: 18,
   },
 });
 export default SearchBarScreen;

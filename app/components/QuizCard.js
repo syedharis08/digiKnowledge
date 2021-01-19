@@ -1,42 +1,76 @@
 import React, { useState } from "react";
+
 import {
   View,
   StyleSheet,
   Text,
   FlatList,
-  Button,
   TouchableOpacity,
 } from "react-native";
 
-function QuizCard({ title, answer = [], onPress, correctAnswer }) {
-  // const [correctAnswer, setCorrectAnswer] = useState();
-
+import AppText from "./AppText";
+const QuizCard = ({ question, options, onPress }) => {
+  const check = (value) => {
+    console.log(value.isCorrect);
+  };
   return (
-    <View style={styles.mainContainer}>
-      <Text>{title}</Text>
-      <FlatList
-        data={answer}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity>
-              <Button
-                onPress={onPress(correctAnswer)}
-                title={item.optionTitle}
-              />
-            </TouchableOpacity>
-          );
-        }}
-      />
+    <View style={styles.container}>
+      <View style={styles.question}>
+        <AppText color="black" style={{ fontWeight: "bold" }}>
+          {question}
+        </AppText>
+      </View>
+      <View style={styles.answer}>
+        <FlatList
+          data={options}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <View style={styles.answers}>
+              <TouchableOpacity
+                onPress={() => {
+                  onPress(item);
+                  check(item);
+                }}
+              >
+                <AppText color="white">{item.option}</AppText>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  container: {
     marginTop: 50,
+  },
+  text: {
+    fontWeight: "bold",
+    margin: 8,
+  },
+  question: {
     justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
+    width: "90%",
+    height: "30%",
+    borderColor: "white",
+    borderWidth: 3,
+  },
+  answers: {
+    padding: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
+    borderWidth: 1,
+    width: "90%",
+    alignSelf: "center",
+  },
+  answer: {
+    top: 20,
   },
 });
+
 export default QuizCard;

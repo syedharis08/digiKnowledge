@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import Screen from "../components/Screen";
 
-import ListItem from "../components/ListItem";
+import ChapterList from "../components/ChapterList";
 import AppText from "../components/AppText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SCREENS } from "../config/Screens";
@@ -153,7 +153,7 @@ function ChapterTopicScreen({ navigation, route }) {
     setAttempt(true);
     const response = await chapterApi.getChapterAndTopic();
     if (!response.ok) {
-      Alert.alert("Attention", "Unable to load quiz.", [
+      Alert.alert("Attention", "Unable to load chapters.", [
         {
           text: "Retry",
           onPress: () => getData(),
@@ -177,19 +177,6 @@ function ChapterTopicScreen({ navigation, route }) {
           {route.params.subject}
         </AppText>
         <AppText color="white">Total Chapter={chaptername.length}</AppText>
-
-        <MaterialCommunityIcons
-          name="target-variant"
-          size={70}
-          style={{ left: 250, bottom: 60, color: "black" }}
-        />
-        <AppText
-          color="white"
-          style={{ fontSize: 15, left: 240, bottom: 60 }}
-          onPress={() => navigation.navigate(SCREENS.Quiz)}
-        >
-          Attempt Quiz
-        </AppText>
       </View>
       <View style={styles.items}>
         <FlatList
@@ -197,12 +184,14 @@ function ChapterTopicScreen({ navigation, route }) {
           keyExtractor={(chaptername) => chaptername._id}
           renderItem={({ item }) => (
             <View>
-              <ListItem
+              <ChapterList
                 icon="book"
                 title={item.chapterName}
                 topic={item.topics}
+                chapterId={item._id}
                 style={styles.chapterStyle}
                 innerStyle={styles.textStyle}
+                quizIcon="target-variant"
               />
             </View>
           )}

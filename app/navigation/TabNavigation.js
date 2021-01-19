@@ -8,7 +8,7 @@ import FeedNavigator from "./FeedNavigator";
 const Tab = createBottomTabNavigator();
 const TabNavigation = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Feed" component={FeedNavigator} />
+    <Tab.Screen name="Home" component={FeedNavigator} />
     <Tab.Screen name="Search" component={SearchBarScreen} />
     <Tab.Screen name="Result" component={ResultScreen} />
     <Tab.Screen name="Account" component={AccountScreen} />
