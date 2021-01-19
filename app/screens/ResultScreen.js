@@ -1,23 +1,17 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  ProgressBarAndroid,
-  Text,
-  Alert,
-} from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
 import AppText from "../components/AppText";
 import Screen from "../components/Screen";
 import colors from "../config/colors";
-import { ProgressChart } from "react-native-chart-kit";
-import ProgressCircle from "react-native-progress-circle";
 import ResultApi from "../api/result";
 import useAuth from "../auth/useAuth";
+import ResultCard from "../components/ResultCard";
 import { FlatList } from "react-native-gesture-handler";
 
 function ResultScreen(props) {
   const [attempt, setAttempt] = useState(false);
-  const [data, setData] = useState([]);
+  const [marks, setMarks] = useState(0);
+  const [resultData, setResultData] = useState([]);
   const { user } = useAuth();
   useEffect(() => {
     getData();
@@ -41,14 +35,32 @@ function ResultScreen(props) {
       setAttempt(false);
       return;
     }
-    setData(response.data);
+    setResultData(response.data);
+    console.log(resultData);
     setAttempt(false);
   };
   return (
-    data.length > 0 && (
+    resultData.length > 0 && (
       <Screen background="2">
-        {console.log(data)}
-        <FlatList data={data} />
+        <View style={{ top: 30 }}>
+          <View style={{ justifyContent: "center", alignSelf: "center" }}>
+            <AppText color="white" style={{ fontWeight: "bold", fontSize: 30 }}>
+              Result Of Attempted quiz
+            </AppText>
+          </View>
+          <FlatList
+            data={resultData}
+            keyExtractor={(resultData) => resultData._id}
+            renderItem={({ item }) => (
+              <View>
+                <ResultCard
+                  obtainedMarks={item.obtained}
+                  chapterName={item.chaptername}
+                />
+              </View>
+            )}
+          />
+        </View>
       </Screen>
     )
   );

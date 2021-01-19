@@ -56,8 +56,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     width: "90%",
     height: "30%",
-    borderColor: "white",
-    borderWidth: 3,
   },
   answers: {
     padding: 30,

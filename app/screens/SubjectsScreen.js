@@ -72,78 +72,44 @@ const topic = [
 function SubjectsScreen({ navigation }) {
   return (
     <Screen background="2">
-      <ScrollView>
-        <View style={styles.mainContainer}>
-          <View style={styles.container}>
-            <Image
-              style={styles.logo}
-              source={require("../assets/Logo.png")}
-            ></Image>
-            <AppText color="white" style={{ fontWeight: "bold" }}>
-              Welcome
-            </AppText>
-          </View>
-          <View style={styles.items}>
-            <AppText
-              color="white"
-              style={{ fontWeight: "bold", fontSize: 25, top: 10, right: 45 }}
-            >
-              Choose your Subject
-            </AppText>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={subjectNames}
-              numColumns={3}
-              keyExtractor={(subjectNames) => subjectNames.id.toString()}
-              renderItem={({ item }) => (
-                <Card
-                  icon={item.icon}
-                  title={item.title}
-                  style={styles.card}
-                  styleIcon={styles.icon}
-                  onPress={() =>
-                    navigation.navigate(SCREENS.ChapterTopic, {
-                      subject: item.title,
-                    })
-                  }
-                />
-              )}
-            />
-          </View>
-          <View style={styles.recommendedTopic}>
-            <AppText
-              color="white"
-              style={{
-                fontWeight: "bold",
-                fontSize: 20,
-                top: 10,
-                right: 30,
-              }}
-            >
-              Recommended Topics for you
-            </AppText>
-
-            <ScrollView horizontal={true}>
-              <FlatList
-                horizontal
-                style={{ flexDirection: "row" }}
-                data={topic}
-                keyExtractor={(topic) => topic.id.toString()}
-                renderItem={({ item }) => (
-                  <TouchableOpacity>
-                    <Card
-                      icon={item.icon}
-                      style={styles.card}
-                      title={item.title}
-                      onPress={() => navigation.navigate(SCREENS.Video)}
-                    />
-                  </TouchableOpacity>
-                )}
-              />
-            </ScrollView>
-          </View>
+      <View style={styles.mainContainer}>
+        <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require("../assets/Logo.png")}
+          ></Image>
+          <AppText color="white" style={{ fontWeight: "bold" }}>
+            Welcome
+          </AppText>
         </View>
-      </ScrollView>
+        <View style={styles.items}>
+          <AppText
+            color="white"
+            style={{ fontWeight: "bold", fontSize: 25, top: 10, right: 45 }}
+          >
+            Choose your Subject
+          </AppText>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={subjectNames}
+            numColumns={3}
+            keyExtractor={(subjectNames) => subjectNames.id.toString()}
+            renderItem={({ item }) => (
+              <Card
+                icon={item.icon}
+                title={item.title}
+                style={styles.card}
+                styleIcon={styles.icon}
+                onPress={() =>
+                  navigation.navigate(SCREENS.ChapterTopic, {
+                    subject: item.title,
+                  })
+                }
+              />
+            )}
+          />
+        </View>
+      </View>
     </Screen>
   );
 }
