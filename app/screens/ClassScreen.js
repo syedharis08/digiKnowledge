@@ -3,6 +3,9 @@ import { FlatList, Image, StyleSheet, View } from "react-native";
 
 import ListItem from "../components/ListItem";
 import Screen from "../components/Screen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import AccountItems from "../components/AccountItems.js";
 
 import Logo from "../assets/Logo.png";
 import AppText from "../components/AppText";
@@ -63,6 +66,7 @@ const classNames = [
 ];
 
 function ClassScreen({ navigation }) {
+  const { logOut } = useAuth();
   return (
     <Screen background="2">
       <Image style={styles.imageStyles} source={Logo} />
@@ -82,6 +86,15 @@ function ClassScreen({ navigation }) {
               onPress={() => navigation.navigate(SCREENS.Tab)}
             />
           )}
+        />
+      </View>
+      <View style={{ bottom: 670 }}>
+        <AccountItems
+          title="Log Out"
+          icon={
+            <MaterialCommunityIcons name="logout" size={30} color="black" />
+          }
+          onPress={() => logOut()}
         />
       </View>
     </Screen>

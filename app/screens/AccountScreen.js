@@ -6,7 +6,6 @@ import {
 } from "@expo/vector-icons";
 
 import AccountItems from "../components/AccountItems.js";
-import AccountListItem from "../components/ListItem";
 import Screen from "../components/Screen";
 import useAuth from "../auth/useAuth";
 
@@ -15,15 +14,12 @@ function AccountScreen(props) {
 
   return (
     <Screen background="2">
+      {console.log(user.name)}
       <AccountItems
-        title={user.email}
+        title={user.name}
         icon={<MaterialCommunityIcons name="account" size={40} color="black" />}
       />
-      <AccountItems
-        title="Settings"
-        icon={<MaterialIcons name="settings" size={30} color="black" />}
-        onPress={() => console.log("Settings")}
-      />
+
       <AccountItems
         title="Log Out"
         icon={<MaterialCommunityIcons name="logout" size={30} color="black" />}

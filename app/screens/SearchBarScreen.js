@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StyleSheet, Text, View, FlatList, TextInput } from "react-native";
 import Screen from "../components/Screen";
 
 import chapterApi from "../api/chapterTopic";
 import AppButton from "../components/AppButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { SCREENS } from "../config/Screens";
+import Card from "../components/Card";
 
-function SearchBarScreen(props) {
+function SearchBarScreen({ navigation }) {
   const data = [
     {
       id: 1,
-      topicName: "Islamabad",
+      topicName: "FlowChart",
     },
     {
       id: 2,
-      topicName: "Islamiyat",
+      topicName: "Computer Networks",
     },
     {
       id: 3,
-      topicName: "Islam",
+      topicName: "Bla",
     },
     {
       id: 4,
-      topicName: "Lahore",
+      topicName: "Bla bla",
     },
   ];
 
@@ -117,9 +122,15 @@ function SearchBarScreen(props) {
             data={topicName}
             keyExtractor={(topicName) => topicName.id.toString()}
             renderItem={({ item }) => (
-              <View>
-                <Text>{item.topicName}</Text>
-              </View>
+              <TouchableOpacity>
+                <Card
+                  icon="book"
+                  title={item.topicName}
+                  style={styles.card}
+                  styleIcon={styles.icon}
+                  onPress={() => navigation.navigate(SCREENS.Video)}
+                />
+              </TouchableOpacity>
             )}
           />
         )}
@@ -149,6 +160,13 @@ const styles = StyleSheet.create({
   },
   listItemText: {
     fontSize: 18,
+  },
+  card: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 118,
+    paddingTop: 20,
+    paddingBottom: 20,
   },
 });
 export default SearchBarScreen;

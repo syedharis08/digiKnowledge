@@ -9,127 +9,6 @@ import AppText from "../components/AppText";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SCREENS } from "../config/Screens";
 import chapterApi from "../api/chapterTopic";
-const computer = [
-  {
-    id: 1,
-    title: "NumberSystem",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-      { id: 4, title: "Topic3", icon: "book" },
-      { id: 5, title: "Topic3", icon: "book" },
-      { id: 6, title: "Topic3", icon: "book" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Problem Solving",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-    ],
-  },
-];
-const maths = [
-  {
-    id: 1,
-    title: "Triangles",
-    topic: [
-      { id: 1, title: "Area", icon: "alpha-a-box" },
-      { id: 2, title: "Parameter", icon: "alpha-p-box" },
-      { id: 3, title: "Circumference", icon: "alpha-c-box" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Matrices",
-    topic: [
-      { id: 1, title: "Row Matrix", icon: "alpha-r-box" },
-      { id: 2, title: "Column Matrix", icon: "alpha-c-box" },
-      { id: 3, title: "Identity Matrix", icon: "alpha-i-box" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Sets",
-    topic: [
-      { id: 1, title: "Set Operations", icon: "alpha-s-box" },
-      { id: 2, title: "Set Values", icon: "alpha-s-box" },
-      { id: 3, title: "Addition of sets", icon: "alpha-a-box" },
-    ],
-  },
-];
-const physics = [
-  {
-    id: 1,
-    title: "nuclear phyiscs",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-      { id: 4, title: "Topic3", icon: "book" },
-      { id: 5, title: "Topic3", icon: "book" },
-      { id: 6, title: "Topic3", icon: "book" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Problem Solving",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-    ],
-  },
-];
-const chemistry = [
-  {
-    id: 1,
-    title: "Organic Chemistry",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-      { id: 4, title: "Topic3", icon: "book" },
-      { id: 5, title: "Topic3", icon: "book" },
-      { id: 6, title: "Topic3", icon: "book" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Problem Solving",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-    ],
-  },
-];
-const pakistanStudies = [
-  {
-    id: 1,
-    title: "Naya Pakistan",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-      { id: 4, title: "Topic3", icon: "book" },
-      { id: 5, title: "Topic3", icon: "book" },
-      { id: 6, title: "Topic3", icon: "book" },
-    ],
-  },
-  {
-    id: 2,
-    title: "Problem Solving",
-    topic: [
-      { id: 1, title: "Topic1", icon: "book" },
-      { id: 2, title: "Topic2", icon: "book" },
-      { id: 3, title: "Topic3", icon: "book" },
-    ],
-  },
-];
 
 function ChapterTopicScreen({ navigation, route }) {
   const [chaptername, setChapterName] = useState([]);
@@ -137,14 +16,8 @@ function ChapterTopicScreen({ navigation, route }) {
 
   useEffect(() => {
     switch (route.params.subject) {
-      case "Mathematics":
-        setChapterName(maths);
-        break;
       case "Computer":
         getData();
-        break;
-      case "Chemistry":
-        setChapterName(chemistry);
         break;
     }
   }, []);
@@ -178,6 +51,7 @@ function ChapterTopicScreen({ navigation, route }) {
         </AppText>
         <AppText color="white">Total Chapter={chaptername.length}</AppText>
       </View>
+
       <View style={styles.items}>
         <FlatList
           data={chaptername}
@@ -197,6 +71,24 @@ function ChapterTopicScreen({ navigation, route }) {
           )}
         />
       </View>
+      {chaptername.length == 0 && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            bottom: 300,
+          }}
+        >
+          <AppText
+            color="white"
+            style={{
+              width: "90%",
+            }}
+          >
+            Our team is working on this chapter. Kindly Check later for updates
+          </AppText>
+        </View>
+      )}
     </Screen>
   );
 }

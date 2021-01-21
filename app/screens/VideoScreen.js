@@ -1,27 +1,39 @@
 import React from "react";
 import { Video } from "expo-av";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import Screen from "../components/Screen";
 import AppButton from "../components/AppButton";
 
-function VideoScreen(props) {
+function VideoScreen({ props }) {
   const video1 = require("../assets/FlowChart.mp4");
   return (
     <Screen background="2">
+      <Text
+        style={{
+          fontSize: 30,
+          top: 100,
+          left: 100,
+          fontWeight: "bold",
+          color: "white",
+        }}
+      >
+        FlowChart
+      </Text>
       <Video
         source={video1}
         rate={1.0}
         volume={1.0}
         isMuted={false}
-        resizeMode="cover"
+        resizeMode="stretch"
         shouldPlay
         isLooping
         useNativeControls
+        orientation="landscape"
         style={{
           width: "100%",
           height: 300,
           justifyContent: "center",
-          top: 200,
+          top: 150,
         }}
       />
       <View style={styles.buttonContainer}></View>

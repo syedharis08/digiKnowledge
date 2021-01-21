@@ -9,9 +9,9 @@ import {
 } from "react-native";
 
 import AppText from "./AppText";
-const QuizCard = ({ question, options, onPress }) => {
-  const check = (value) => {
-    console.log(value.isCorrect);
+const QuizCard = ({ question, options, onPress, isCorrect }) => {
+  const getIsCoreect = (item) => {
+    if (item.isCorrect) return 1;
   };
   return (
     <View style={styles.container}>
@@ -29,10 +29,19 @@ const QuizCard = ({ question, options, onPress }) => {
               <TouchableOpacity
                 onPress={() => {
                   onPress(item);
-                  check(item);
                 }}
               >
-                <AppText color="white">{item.option}</AppText>
+                {isCorrect ? (
+                  <Text
+                    style={[
+                      getIsCoreect(item) == 1 ? styles.green : styles.white,
+                    ]}
+                  >
+                    {item.option}
+                  </Text>
+                ) : (
+                  <AppText color="white">{item.option}</AppText>
+                )}
               </TouchableOpacity>
             </View>
           )}
@@ -55,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     width: "90%",
-    height: "30%",
+    height: "20%",
   },
   answers: {
     padding: 30,
@@ -68,6 +77,15 @@ const styles = StyleSheet.create({
   },
   answer: {
     top: 20,
+  },
+
+  green: {
+    color: "green",
+    fontSize: 20,
+  },
+  red: {
+    color: "white",
+    fontSize: 20,
   },
 });
 

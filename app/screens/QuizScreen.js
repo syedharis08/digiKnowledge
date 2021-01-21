@@ -9,6 +9,7 @@ import QuizCard from "../components/QuizCard";
 import ResultApi from "../api/result";
 import useAuth from "../auth/useAuth";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SCREENS } from "../config/Screens";
 
 function QuizScreen({ navigation, route }) {
@@ -16,11 +17,24 @@ function QuizScreen({ navigation, route }) {
   const [counter, setCounter] = useState(0);
   const [score, setScore] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [visibleStart, setVisibleStart] = useState(true);
+  const [buttonVisible, setButtonVisible] = useState(false);
   const [attempt, setAttempt] = useState(false);
   const { user } = useAuth();
   useEffect(() => {
     getData();
   }, []);
+
+  const shuffleArray = (array) => {
+    let i = array.length - 1;
+    for (; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
 
   const getData = async () => {
     setAttempt(true);
@@ -45,6 +59,12 @@ function QuizScreen({ navigation, route }) {
     setAttempt(false);
   };
 
+  const handleButtonChange = () => {
+    if (counter + 1 > quiz.length - 1) {
+      return setVisible(true);
+    }
+    setCounter(counter + 1);
+  };
   const handleChange = (option) => {
     if (option.isCorrect) {
       setScore(score + 1);
@@ -93,6 +113,12 @@ function QuizScreen({ navigation, route }) {
   const handleReattempt = () => {
     setCounter(0);
     setScore(0);
+    setButtonVisible(false);
+    setVisible(false);
+  };
+  const handleShowcorrect = () => {
+    setCounter(0);
+    setButtonVisible(true);
     setVisible(false);
   };
   return (
@@ -103,11 +129,24 @@ function QuizScreen({ navigation, route }) {
             Question Number {counter + 1}
           </AppText>
         </View>
-        <QuizCard
-          question={quiz[counter].question}
-          options={quiz[counter].options}
-          onPress={handleChange}
-        />
+        {buttonVisible ? (
+          <QuizCard
+            question={quiz[counter].question}
+            options={quiz[counter].options}
+            isCorrect={true}
+          />
+        ) : (
+          <QuizCard
+            question={quiz[counter].question}
+            options={quiz[counter].options}
+            onPress={handleChange}
+          />
+        )}
+        {buttonVisible && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <AppButton title="next" onPress={handleButtonChange} />
+          </View>
+        )}
 
         <Modal transparent={true} visible={visible} animationType="slide">
           <View
@@ -132,10 +171,41 @@ function QuizScreen({ navigation, route }) {
                 color="red"
                 onPress={handleReattempt}
               />
-              <Button title="Show Correct Options" color="green" />
+              <Button
+                title="Show Correct Options"
+                color="green"
+                onPress={handleShowcorrect}
+              />
             </View>
           </View>
           <Button title="Close" onPress={() => setVisible(false)} />
+        </Modal>
+        <Modal transparent={true} visible={visibleStart} animationType="slide">
+          <View
+            style={{
+              height: "50%",
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <MaterialCommunityIcons
+              name="target-variant"
+              size={70}
+              style={{ color: "black" }}
+            />
+            <AppText color="black" style={{ fontWeight: "bold" }}>
+              ATTENTIION!
+            </AppText>
+            <View style={{ width: "90%" }}>
+              <AppText color="black">
+                You're going to attempt your quiz, there is no time limit. Take
+                your time before marking an option. Once selected you can not
+                change your option
+              </AppText>
+            </View>
+          </View>
+          <Button title="Start Quiz" onPress={() => setVisibleStart(false)} />
         </Modal>
       </Screen>
     )

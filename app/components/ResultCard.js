@@ -17,7 +17,7 @@ function ResultCard({ obtainedMarks, chapterName }) {
   };
   return (
     <View style={styles.container}>
-      <AppText color="white" style={{ fontSize: 30 }}>
+      <AppText color="white" style={{ fontSize: 20 }}>
         {chapterName}
       </AppText>
       <View style={{ flexDirection: "row" }}>

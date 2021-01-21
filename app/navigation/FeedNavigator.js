@@ -16,10 +16,6 @@ const FeedNavigator = () => (
     <Stack.Screen name={SCREENS.ChapterTopic} component={ChapterTopicScreen} />
     <Stack.Screen name={SCREENS.Video} component={VideoScreen} />
     <Stack.Screen name={SCREENS.Quiz} component={QuizScreen} />
-    <Stack.Screen
-      name={SCREENS.UpdatePasswordScreen}
-      component={UpdatePasswordScreen}
-    />
   </Stack.Navigator>
 );
 
